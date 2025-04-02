@@ -6,14 +6,16 @@ import { Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { motion, AnimatePresence } from "framer-motion";
 
+ 
 const DraggableField = ({ field, onLabelChange, onDelete }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: field.id });
-
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: field.id });
+  
+ 
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(field.label);
-  const [isVisible, setIsVisible] = useState(true); // Track visibility for animation
-
+  const [isVisible, setIsVisible] = useState(true);
+  const [isRequired, setIsRequired] = useState(field.required || false);
+ 
   const handleLabelChange = (e) => setLabel(e.target.value);
 
   const saveLabel = () => {
@@ -36,6 +38,12 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
     transform: CSS.Transform.toString(transform),
     transition,
     marginBottom: "1rem",
+  };
+
+  const toggleRequired = () => {
+    const updatedRequired = !isRequired;
+    setIsRequired(updatedRequired);
+    onUpdateField(field.id, { ...field, required: updatedRequired });
   };
 
   return (
@@ -98,9 +106,22 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
           </div>
 
           <FieldRenderer field={{ ...field, label }} />
+
+          <div className="flex justify-end mt-2">
+        <label className="flex items-center text-sm">
+          <input
+            type="checkbox"
+            checked={isRequired}
+            onChange={toggleRequired}
+            className="mr-2"
+          />
+          Required
+        </label>
+      </div>
         </motion.div>
       )}
     </AnimatePresence>
+ 
   );
 };
 

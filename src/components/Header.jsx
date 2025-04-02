@@ -4,7 +4,6 @@ import { Navbar } from './Navbar';
 const Header = () => {
   return (
     <>
-      {/* Main Header */}
       <header className="flex justify-between items-center px-6 py-4 border-b">
         <div className="text-2xl font-bold text-red-500">SkillGrama</div>
         <div className="flex items-center gap-4">
@@ -21,7 +20,6 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Subheader */}
      
       <div className="flex justify-between items-center">
         <Navbar />

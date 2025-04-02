@@ -47,7 +47,6 @@ const FormDetailDialog = ({ open, setOpen }) => {
       alert("An error occurred while creating the form.");
     }
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({

@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 
-// Validation schema for initial fields
 export const validationSchema = Yup.object().shape({
   name: Yup.string()
     .required('Name is required')
@@ -17,6 +16,10 @@ export const validationSchema = Yup.object().shape({
     .matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits')
     .test('len', 'Phone number must be exactly 10 digits', val => val.length === 10),
   
+  gender: Yup.string()
+    .required('Please select a gender option'),
+
+
   radio: Yup.string()
     .required('Please select an option'),
   
@@ -24,49 +27,41 @@ export const validationSchema = Yup.object().shape({
     .required('Please select a dropdown option'),
   
   checkbox: Yup.boolean()
-    .oneOf([true], 'Checkbox must be checked')
-});
+    .oneOf([true], 'Checkbox must be checked'),
 
-// Validation schema for data fields (image uploads)
-export const dataFieldsValidationSchema = Yup.object().shape({
-  'company-logo': Yup.mixed()
-    .required('Company logo is required')
-    .test('fileSize', 'File is too large', (value) => {
-      // Check file size (e.g., max 5MB)
-      return value && value.size <= 5 * 1024 * 1024;
-    })
-    .test('fileType', 'Unsupported file type', (value) => {
-      // Allowed file types
-      const supportedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      return value && supportedTypes.includes(value.type);
-    }),
-  
+    'company-logo': Yup.mixed()
+    .nullable()
+    .test('fileSize', 'File is too large', value => 
+      !value || value.size <= 5 * 1024 * 1024
+    )
+    .test('fileType', 'Unsupported file type', value => 
+      !value || ['image/jpeg', 'image/png', 'image/gif'].includes(value.type)
+    ),
+    
   'image-footer': Yup.mixed()
-    .required('Footer image is required')
-    .test('fileSize', 'File is too large', (value) => {
-      return value && value.size <= 5 * 1024 * 1024;
-    })
-    .test('fileType', 'Unsupported file type', (value) => {
-      const supportedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      return value && supportedTypes.includes(value.type);
-    }),
-  
+    .nullable()
+    .test('fileSize', 'File is too large', value => 
+      !value || value.size <= 5 * 1024 * 1024
+    )
+    .test('fileType', 'Unsupported file type', value => 
+      !value || ['image/jpeg', 'image/png', 'image/gif'].includes(value.type)
+    ),
+    
   'image-header': Yup.mixed()
-    .required('Header image is required')
-    .test('fileSize', 'File is too large', (value) => {
-      return value && value.size <= 5 * 1024 * 1024;
-    })
-    .test('fileType', 'Unsupported file type', (value) => {
-      const supportedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      return value && supportedTypes.includes(value.type);
-    })
+    .nullable()
+    .test('fileSize', 'File is too large', value => 
+      !value || value.size <= 5 * 1024 * 1024
+    )
+    .test('fileType', 'Unsupported file type', value => 
+      !value || ['image/jpeg', 'image/png', 'image/gif'].includes(value.type)
+    )
 });
 
-// Initial values to match your fields
 export const initialValues = {
   name: '',
   email: '',
   phone: '',
+  gender: '',
   radio: '',
   dropdown: '',
   checkbox: false,

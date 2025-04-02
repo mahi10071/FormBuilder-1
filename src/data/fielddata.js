@@ -1,45 +1,34 @@
-// data/fieldData.js
 export const initialFields = [
-    { id: 'name', type: 'text', label: 'Name' },
-    { id: 'email', type: 'email', label: 'Email' },
-    { id: 'phone', type: 'text', label: 'Phone' },
-    { id: 'radio', type: 'radio', label: 'Radio', options: ['Option 1', 'Option 2'] },
-    { id: 'dropdown', type: 'dropdown', label: 'Dropdown', options: ['Option 1', 'Option 2', 'Option 3'] },
-    { id: 'checkbox', type: 'checkbox', label: 'Checkbox' }
-  ];
+  { id: 'name', type: 'text', dataType: 'string', controlType: 'textbox', label: 'Name' },
+  { id: 'email', type: 'email', dataType: 'string', controlType: 'email', label: 'Email' },
+  { id: 'phone', type: 'text', dataType: 'string', controlType: 'textbox', label: 'Phone' },
+  { id: 'radio', type: 'radio', dataType: 'string', controlType: 'radiobutton', label: 'Radio', options: ['Option 1', 'Option 2'] },
+  { id: 'dropdown', type: 'dropdown', dataType: 'string', controlType: 'select', label: 'Dropdown', options: ['Option 1', 'Option 2', 'Option 3'] },
+  { id: 'checkbox', type: 'checkbox', dataType: 'boolean', controlType: 'checkbox', label: 'Checkbox' }
+];
+
+export const dataFields = [
+  { id: 'company-logo', type: 'image', dataType: 'binary', controlType: 'fileupload', label: 'Company Logo' },
+  { id: 'image-footer', type: 'image', dataType: 'binary', controlType: 'fileupload', label: 'Image Footer' },
+  { id: 'image-header', type: 'image', dataType: 'binary', controlType: 'fileupload', label: 'Image Header' }
+];
+
+export const customFields = [
+  { id: 'text', type: 'text', dataType: 'string', controlType: 'textbox', label: 'Text Input' },
   
-  export const dataFields = [
-    { id: 'company-logo', type: 'image', label: 'Company Logo' },
-    { id: 'image-footer', type: 'image', label: 'Image Footer' },
-    { id: 'image-header', type: 'image', label: 'Image Header' }
-  ];
+  { id: 'number', type: 'number', dataType: 'number', controlType: 'numberbox', label: 'Number Input' },
   
-  export const customFields = [
-    // Text Input Field
-    { id: 'text', type: 'text', label: 'Text Input' },
- 
-    // Number Input Field
-    { id: 'number', type: 'number', label: 'Number Input' },
- 
-    // Textarea Field
-    { id: 'textarea', type: 'textarea', label: 'Textarea' },
- 
-    // Checkbox Field (Single checkbox)
-    { id: 'checkbox', type: 'checkbox', label: 'Checkbox' },
- 
-    // Multiple Checkboxes (if you want a group of checkboxes)
-    { id: 'checkboxes', type: 'checkbox', label: 'Checkboxes', options: ['Option 1', 'Option 2', 'Option 3'] },
- 
-    // Radio Button Field
-    { id: 'radio', type: 'radio', label: 'Radio Button', options: ['Option 1', 'Option 2'] },
- 
-    // Dropdown (Select list)
-    { id: 'dropdown', type: 'dropdown', label: 'Dropdown', options: ['Option 1', 'Option 2', 'Option 3'] },
- 
-    // Date Input Field
-    { id: 'date', type: 'date', label: 'Date Input' },
- 
-    // File Upload Field
-    { id: 'file', type: 'file', label: 'File Upload' }
-  ];
- 
+  { id: 'textarea', type: 'textarea', dataType: 'string', controlType: 'multilinetext', label: 'Textarea' },
+  
+  { id: 'checkbox', type: 'checkbox', dataType: 'boolean', controlType: 'checkbox', label: 'Checkbox' },
+  
+  { id: 'checkboxes', type: 'checkbox', dataType: 'array', controlType: 'checkboxgroup', label: 'Checkboxes', options: ['Option 1', 'Option 2', 'Option 3'] },
+  
+  { id: 'radio', type: 'radio', dataType: 'string', controlType: 'radiobutton', label: 'Radio Button', options: ['Option 1', 'Option 2'] },
+  
+  { id: 'dropdown', type: 'dropdown', dataType: 'string', controlType: 'select', label: 'Dropdown', options: ['Option 1', 'Option 2', 'Option 3'] },
+  
+  { id: 'date', type: 'date', dataType: 'date', controlType: 'datepicker', label: 'Date Input' },
+  
+  { id: 'file', type: 'file', dataType: 'binary', controlType: 'fileupload', label: 'File Upload' }
+];

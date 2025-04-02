@@ -1,11 +1,13 @@
 import React from 'react';
 
 const FieldRenderer = ({ field }) => {
+
+ 
+
   switch (field.type) {
     case 'text':
       return (
         <div className="mb-2">
-          {/* <label className="block mb-2">{field.label}</label> */}
           <input
             type="text"
             placeholder={`Enter your ${field.label.toLowerCase()} here`}
@@ -16,7 +18,6 @@ const FieldRenderer = ({ field }) => {
     case 'email':
       return (
         <div className="mb-2">
-          {/* <label className="block mb-2">{field.label}</label> */}
           <input
             type="email"
             placeholder={`Enter your ${field.label.toLowerCase()} here`}
@@ -27,7 +28,6 @@ const FieldRenderer = ({ field }) => {
     case 'radio':
       return (
         <div className="mb-2">
-          {/* <label className="block mb-2">{field.label}</label> */}
           <div className="flex items-center space-x-4">
             {field.options && field.options.map((option, index) => (
               <label key={index} className="flex items-center">
@@ -41,7 +41,6 @@ const FieldRenderer = ({ field }) => {
     case 'dropdown':
       return (
         <div className="mb-2">
-          {/* <label className="block mb-2">{field.label}</label> */}
           <select className="w-full p-2 border rounded shadow-sm">
             <option value="">Select {field.label}</option>
             {field.options && field.options.map((option, index) => (
@@ -53,10 +52,8 @@ const FieldRenderer = ({ field }) => {
     case 'checkbox':
       return (
         <div className="mb-2">
-          {/* <label className="flex items-center"> */}
             <input type="checkbox" className="mr-2" />
-            {/* {field.label} */}
-          {/* </label> */}
+            
         </div>
       );
     case 'image':
@@ -64,30 +61,25 @@ const FieldRenderer = ({ field }) => {
         const file = event.target.files[0];
         if (!file) return;
     
-        // Validate file type
         const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
         if (!allowedTypes.includes(file.type)) {
           alert('Please upload a valid image file (JPEG, PNG, GIF, or WebP)');
           return;
         }
     
-        // Validate file size (e.g., max 5MB)
-        const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+        const maxSizeInBytes = 5 * 1024 * 1024; 
         if (file.size > maxSizeInBytes) {
           alert('File is too large. Maximum file size is 5MB');
           return;
         }
     
-        // Create a file reader to generate preview
         const reader = new FileReader();
         reader.onloadend = () => {
-          // Assuming you have a way to update form state
-          // This might vary depending on your form management
           field.onChange({
             target: {
               name: field.name,
-              value: file, // Store the actual file
-              preview: reader.result // Store preview URL
+              value: file, 
+              preview: reader.result 
             }
           });
         };
@@ -126,7 +118,6 @@ const FieldRenderer = ({ field }) => {
     default:
       return (
         <div className="mb-2">
-          {/* <label className="block mb-2">{field.label}</label> */}
           <input
             type="text"
             placeholder={`Enter your ${field.label.toLowerCase()} here`}

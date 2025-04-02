@@ -7,7 +7,6 @@ import { Field, ErrorMessage } from 'formik';
 
 const SortableFieldList = ({ fields, onFieldsChange, errors, 
   touched, onDelete }) => {
- 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -15,8 +14,7 @@ const SortableFieldList = ({ fields, onFieldsChange, errors,
       },
     })
   );
-
-  
+  console.log(fields);
   const onDragEnd = (event) => {
     const { active, over } = event;
     
@@ -87,7 +85,6 @@ const SortableFieldList = ({ fields, onFieldsChange, errors,
           </div>
         );
       
-      // Add more field type renderers as needed
       default:
         return null;
     }
@@ -111,7 +108,6 @@ const SortableFieldList = ({ fields, onFieldsChange, errors,
         ) : (
           fields.map((field) => (
             <DraggableField key={field.id} field={field}  onLabelChange={handleLabelChange}  onDelete={onDelete}
-            // onDelete={onDelete}
             />
           ))
         )}

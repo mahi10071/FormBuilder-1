@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { Formik, Form } from "formik";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import FormPreview from "./FormPreview";
-import SortableFieldList from "./SortableFieldList";
-import { initialFields, dataFields, customFields } from "../data/fielddata";
-import { validationSchema, initialValues } from "../validations/formvalidation";
+
+  
+import React, { useState, useEffect } from 'react';
+import { Formik, Form } from 'formik';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import FormPreview from './FormPreview';
+import SortableFieldList from './SortableFieldList';
+import { initialFields, dataFields, customFields } from '../data/fielddata';
+import { validationSchema , initialValues } from '../validations/formvalidation'; 
+import * as Yup from 'yup';
 
 const FormBuilder = () => {
-  
-  // const [formFields, setFormFields] = useState([
-  //   { id: "name-field", type: "text", label: "Name" },
-  //   { id: "email-field", type: "email", label: "Email" },
-  //   {
-  //     id: "gender-field",
-  //     type: "radio",
-  //     label: "Gender",
-  //     options: ["Male", "Female"],
-  //   },
-  // ]);
+  const [formTitle, setFormTitle] = useState("Demo Form");
+  const [formDescription, setFormDescription] = useState("This is form description");
+  const [formFields, setFormFields] = useState([
+    { id: 'name', type: 'text', label: 'Name' },
+    { id: 'email', type: 'email', label: 'Email' },
+    { id: 'gender', type: 'radio', label: 'Gender', options: ['Male', 'Female'] }
+  ]);
   const [formPages, setFormPages] = useState([
-    [
-      { id: "name-field", type: "text", label: "Name" },
-      { id: "email-field", type: "email", label: "Email" },
-    ],
+    [{ id: 'name', type: 'text', label: 'Name' },
+    { id: 'email', type: 'email', label: 'Email' }],
   ]);
   const [companyLogo, setCompanyLogo] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -37,13 +34,14 @@ const FormBuilder = () => {
   }, [formPages, pendingPageAdd]);
 
   const onDrop = (field) => {
-    const newField = { ...field, id: `${field.id}-${Date.now()}` };
+    const newField = { ...field };
     setFormPages((prevPages) => {
       const updatedPages = [...prevPages];
       updatedPages[currentPage] = [...updatedPages[currentPage], newField];
       return updatedPages;
     });
   };
+
 
   const handleDeleteField = (fieldId) => {
     setFormPages((prevPages) => {
@@ -91,24 +89,58 @@ const FormBuilder = () => {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    try {
-      console.log("Form submitted", values);
-    } catch (error) {
-      console.error("Submission error", error);
-    } finally {
-      setSubmitting(false);
-    }
+    console.log("Form submitted with values:", values); 
+    setSubmitting(false);
   };
 
+  const getFormValues = () => {
+    const allFieldIds = new Set();
+    
+    formPages.forEach(page => {
+      page.forEach(field => {
+        allFieldIds.add(field.id);
+      });
+    });
+    const formValues = { ...initialValues };
+    
+    allFieldIds.forEach(fieldId => {
+      if (!(fieldId in formValues)) {
+        const fieldType = getFieldType(fieldId);
+        
+        if (fieldType === 'checkbox') {
+          formValues[fieldId] = false;
+        } else if (fieldType === 'file') {
+          formValues[fieldId] = null;
+        } else {
+          formValues[fieldId] = '';
+        }
+      }
+    });
+    return formValues;
+  };
+  
+  const getFieldType = (fieldId) => {
+    for (const page of formPages) {
+      for (const field of page) {
+        if (field.id === fieldId) {
+          return field.type;
+        }
+      }
+    }
+    return 'text'; 
+  };
+  
   return (
     <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {({ isSubmitting, values, errors, touched }) => (
-        <div className="flex flex-col min-h-screen bg-white">
-          <Header  />
+    initialValues={getFormValues()}
+    validationSchema={validationSchema}
+    onSubmit={handleSubmit}
+    enableReinitialize={true} 
+  >
+
+      {({ isSubmitting, errors, touched, values }) => (
+        <Form className="flex flex-col min-h-screen bg-white">
+          <Header formTitle={formTitle} />
 
           <div className="flex flex-1 p-5">
             <div className="w-1/4 pr-4">
@@ -126,7 +158,11 @@ const FormBuilder = () => {
                 currentPage={currentPage}
                 onDrop={onDrop}
                 setFieldsForPage={setFieldsForPage}
-                onDelete={handleDeleteField}
+                onDelete = {handleDeleteField}
+                formikValues={values} 
+                formikErrors={errors} 
+                formikTouched={touched}
+                
               />
 
               <div className="flex justify-between mt-4">
@@ -164,16 +200,25 @@ const FormBuilder = () => {
                 </button>
               </div>
 
-              {/* <button
+               {/* <button
                 type="submit"
                 disabled={isSubmitting}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
               >
                 Submit Form
               </button> */}
+
+               {/* <div className="mt-4 p-4 bg-gray-100 rounded">
+                <h3 className="font-bold">Form State (Debug):</h3>
+                <div>
+                  <pre className="text-xs mt-2">{JSON.stringify({values, errors, touched}, null, 2)}</pre>
+                </div>
+              </div> */}
+              
             </main>
           </div>
-        </div>
+        
+        </Form>
       )}
     </Formik>
   );

@@ -1,15 +1,20 @@
-import React from "react";
-import FormHeader from "./FormHeader";
-import SortableFieldList from "./SortableFieldList";
+import React from 'react';
+import FormHeader from './FormHeader';
+import SortableFieldList from './SortableFieldList';
+import { Field, ErrorMessage } from 'formik';
 import { useParams } from "react-router-dom";
-
-// Assuming you have a state for the fields (questions)
-const FormPreview = ({
-  onDrop,
-  currentPage,
-  formPages,
-  setFieldsForPage,
+  
+const FormPreview = ({ 
+  formTitle, 
+  formDescription, 
+  formPages, 
+  currentPage, 
+  onDrop, 
+  setFieldsForPage, 
   onDelete,
+  formikValues,
+  formikErrors,
+  formikTouched
 }) => {
   const { id } = useParams();
 
@@ -47,7 +52,6 @@ const FormPreview = ({
       console.error("Error:", error);
     }
   };
-
   return (
     <div
       className="flex-1 border rounded-lg relative p-6"
