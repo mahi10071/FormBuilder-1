@@ -7,7 +7,7 @@ import { Field, ErrorMessage } from 'formik';
 
 const SortableFieldList = ({ fields, onFieldsChange, errors, 
   touched, onDelete }) => {
-  // Set up sensors for drag and drop
+ 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -16,7 +16,7 @@ const SortableFieldList = ({ fields, onFieldsChange, errors,
     })
   );
 
-  // Handle reordering of fields
+  
   const onDragEnd = (event) => {
     const { active, over } = event;
     

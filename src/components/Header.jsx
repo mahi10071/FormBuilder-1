@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar } from './Navbar';
 
-const Header = ({ formTitle }) => {
+const Header = () => {
   return (
     <>
       {/* Main Header */}

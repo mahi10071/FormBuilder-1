@@ -8,22 +8,20 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
- 
+
 const FormDetailDialog = ({ open, setOpen }) => {
-  // Combine title and description into one state object
   const [formData, setFormData] = useState({
     title: "",
     description: "",
   });
- 
+
   const navigate = useNavigate();
- 
+
   const handleClose = () => {
     setOpen(false);
   };
- 
+
   const handleOk = async () => {
-    // Send the formData object to the backend
     try {
       const response = await fetch("http://localhost:8084/api/forms/create", {
         method: "POST",
@@ -32,12 +30,12 @@ const FormDetailDialog = ({ open, setOpen }) => {
         },
         body: JSON.stringify(formData),
       });
- 
+
       if (response.ok) {
-        // Navigate to '/buildform' with the state containing formData
-        navigate("/buildform", {
-          state: { ...formData },
-        });
+        const form = await response.json();
+
+        navigate(`/buildform/${form.id}`);
+
         setOpen(false);
       } else {
         const errorData = await response.json();
@@ -49,8 +47,7 @@ const FormDetailDialog = ({ open, setOpen }) => {
       alert("An error occurred while creating the form.");
     }
   };
- 
-  // Handle changes to title or description
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -58,7 +55,7 @@ const FormDetailDialog = ({ open, setOpen }) => {
       [name]: value,
     }));
   };
- 
+
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
@@ -73,7 +70,7 @@ const FormDetailDialog = ({ open, setOpen }) => {
             variant="outlined"
             value={formData.title}
             onChange={handleChange}
-            name="title" // specify name attribute for form data mapping
+            name="title"
           />
           <TextField
             margin="dense"
@@ -83,7 +80,7 @@ const FormDetailDialog = ({ open, setOpen }) => {
             variant="outlined"
             value={formData.description}
             onChange={handleChange}
-            name="description" // specify name attribute for form data mapping
+            name="description"
           />
         </DialogContent>
         <DialogActions>
@@ -98,5 +95,5 @@ const FormDetailDialog = ({ open, setOpen }) => {
     </div>
   );
 };
- 
-export default FormDetailDialog
+
+export default FormDetailDialog;

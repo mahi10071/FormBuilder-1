@@ -12,7 +12,7 @@ const ScreenRouter = () => {
             <Forms/>
         }></Route>
         <Route
-        path="/buildform"
+        path="/buildform/:id"
         element={
             <FormBuilder/>
         }></Route>
