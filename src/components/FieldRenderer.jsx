@@ -18,6 +18,16 @@ const FieldRenderer = ({ field, onUpdateField }) => {
       setError("");
     }
   };
+  const handleBlur = () => {
+    if (field.type === "email") {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(value)) {
+        setError("Please enter a valid email address.");
+      } else {
+        setError("");
+      }
+    }
+  };
 
   const handleAddOption = (event) => {
     event.preventDefault();
@@ -92,6 +102,7 @@ const FieldRenderer = ({ field, onUpdateField }) => {
             placeholder={`Enter your ${field.label.toLowerCase()} here`}
             value={value}
             onChange={handleChange}
+            onBlur={handleBlur} // Validates when leaving the field
             required={field.required}
             className={`w-full p-2 border rounded shadow-sm ${
               field.required && error ? "border-red-500" : ""
@@ -261,6 +272,52 @@ const FieldRenderer = ({ field, onUpdateField }) => {
           </div>
         </div>
       );
+    //positive,negative,decimal numbers only
+    case "number":
+      return (
+        <div className="mb-2">
+          <input
+            type="text"
+            placeholder={`Enter your ${field.label.toLowerCase()} here`}
+            value={value}
+            onChange={(e) => {
+              const inputValue = e.target.value;
+              if (/^-?\d*\.?\d*$/.test(inputValue) || inputValue === "") {
+                // Allows positive, negative, and decimal numbers
+                setValue(inputValue);
+                setError("");
+              } else {
+                setError("Only numbers are allowed.");
+              }
+            }}
+            onPaste={(e) => {
+              const pastedText = e.clipboardData.getData("text");
+              if (!/^-?\d*\.?\d*$/.test(pastedText)) {
+                e.preventDefault();
+                setError("Only numbers are allowed.");
+              }
+            }}
+            required={field.required}
+            className={`w-full p-2 border rounded shadow-sm ${
+              field.required && error ? "border-red-500" : ""
+            }`}
+          />
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+        </div>
+      );
+    case "date":
+      return (
+        <div className="mb-2">
+          <input
+            type="date"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            required={field.required}
+            className="w-full p-2 border rounded shadow-sm"
+          />
+        </div>
+      );
+
     case "rating":
       return (
         <div className="mb-2">

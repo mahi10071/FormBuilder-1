@@ -23,7 +23,6 @@ const SortableFieldList = ({
     })
   );
   //console.log(fields);
-  // zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
   const onDragEnd = (event) => {
     const { active, over } = event;
 
