@@ -1,32 +1,46 @@
+import React, { useState } from "react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import FieldRenderer from "./FieldRenderer";
 
-import React, { useState } from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import FieldRenderer from './FieldRenderer';
- 
-const DraggableField = ({ field, onLabelChange, onDelete }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: field.id });
+const DraggableField = ({ field, onLabelChange, onDelete, onUpdateField }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: field.id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    marginBottom: '1rem',
+    marginBottom: "1rem",
   };
- 
+
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(field.label);
   const [isRequired, setIsRequired] = useState(field.required || false);
- 
+
   const handleLabelChange = (e) => setLabel(e.target.value);
- 
+
   const saveLabel = () => {
     setIsEditing(false);
     onLabelChange(field.id, label);
   };
- 
+
+  // const toggleRequired = () => {
+  //   const updatedRequired = !isRequired;
+  //   setIsRequired(updatedRequired);
+  //   //onUpdateField(field.id, { ...field, required: updatedRequired });
+  //   if (onUpdateField) {
+  //     onUpdateField(field.id, { ...field, required: updatedRequired });
+  //   } else {
+  //     console.error("onUpdateField is not defined!");
+  //   }
+  // };
+
   const toggleRequired = () => {
     const updatedRequired = !isRequired;
     setIsRequired(updatedRequired);
-    onUpdateField(field.id, { ...field, required: updatedRequired });
+
+    if (typeof onUpdateField === "function") {
+      onUpdateField(field.id, { required: updatedRequired }); // ✅ Now it works!
+    }
   };
 
   return (
@@ -44,14 +58,14 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
             value={label}
             onChange={handleLabelChange}
             onBlur={saveLabel}
-            onKeyDown={(e) => e.key === 'Enter' && saveLabel()}
+            onKeyDown={(e) => e.key === "Enter" && saveLabel()}
             autoFocus
             className="border p-1 rounded"
           />
         ) : (
           <span className="font-medium">{label}</span>
         )}
-   
+
         <div className="flex space-x-2">
           <button
             className="text-blue-500 hover:underline text-sm"
@@ -63,17 +77,17 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
           >
             Edit
           </button>
-          
+
           <button
-    className="text-red-500 hover:underline text-sm"
-    onClick={(e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      onDelete(field.id);
-    }}
-  >
-    Delete
-  </button>
+            className="text-red-500 hover:underline text-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onDelete(field.id);
+            }}
+          >
+            Delete
+          </button>
         </div>
       </div>
       <FieldRenderer field={{ ...field, label, required: isRequired }} />
@@ -91,7 +105,5 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
     </div>
   );
 };
- 
+
 export default DraggableField;
- 
- 
