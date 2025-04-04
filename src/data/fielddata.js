@@ -15,9 +15,9 @@ export const initialFields = [
   },
   {
     id: "phone",
-    type: "text",
-    dataType: "string",
-    controlType: "textbox",
+    type: "number",
+    dataType: "number",
+    controlType: "numberbox",
     label: "Phone",
   },
   // {
