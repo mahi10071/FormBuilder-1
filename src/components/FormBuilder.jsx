@@ -4,28 +4,35 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import FormPreview from "./FormPreview";
 import SortableFieldList from "./SortableFieldList";
-import { initialFields, dataFields, customFields } from "../data/fielddata";
-import { validationSchema, initialValues } from "../validations/formvalidation";
+import {
+  initialFields,
+  dataFields,
+  initialValues,
+  customFields,
+} from "../data/fielddata";
+// import { validationSchema, initialValues } from "../validations/formvalidation";
 import * as Yup from "yup";
 import { FormContext } from "../context/FormContext";
 
 const FormBuilder = () => {
+  const [formTitle, setFormTitle] = useState("Demo Form");
+  const [formDescription, setFormDescription] = useState(
+    "This is form description"
+  );
+  const [formFields, setFormFields] = useState([
+    { id: "name", type: "text", label: "Name" },
+    { id: "email", type: "email", label: "Email" },
+    {
+      id: "gender",
+      type: "radio",
+      label: "Gender",
+      options: ["Male", "Female"],
+    },
+  ]);
   const [formPages, setFormPages] = useState([
     [
-      {
-        id: "name",
-        type: "text",
-        dataType: "string",
-        controlType: "textbox",
-        label: "Name",
-      },
-      {
-        id: "email",
-        type: "email",
-        dataType: "string",
-        controlType: "email",
-        label: "Email",
-      },
+      { id: "name", type: "text", label: "Name" },
+      { id: "email", type: "email", label: "Email" },
     ],
   ]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -98,6 +105,7 @@ const FormBuilder = () => {
   };
 
   const getFormValues = () => {
+    console.log("called")
     const allFieldIds = new Set();
 
     formPages.forEach((page) => {
@@ -147,13 +155,13 @@ const FormBuilder = () => {
     >
       <Formik
         initialValues={getFormValues()}
-        validationSchema={validationSchema}
+        // validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize={true}
       >
-        {({ errors, touched, values }) => (
-          <Form className="flex flex-col min-h-screen bg-white">
-            <Header />
+        {({isSubmitting, errors, touched, values }) => (
+          <Form initialValues={getFormValues()} className="flex flex-col min-h-screen bg-white">
+            <Header formTitle={formTitle} />
 
             <div className="flex flex-1 p-5">
               <div className="w-1/4 pr-4">
@@ -166,15 +174,27 @@ const FormBuilder = () => {
               </div>
               <main className="w-3/4">
                 <FormPreview
-                  formPages={formPages}
-                  currentPage={currentPage}
-                  onDrop={onDrop}
-                  setFieldsForPage={setFieldsForPage}
+                 formTitle={formTitle}
+                 formDescription={formDescription}
+                 formPages={formPages}
+                 currentPage={currentPage}
+                 onDrop={onDrop}
+                 setFieldsForPage={setFieldsForPage}
+                 onDelete={handleDeleteField}
+                 formikValues={values}
+                 formikErrors={errors}
+                 formikTouched={touched}
+                 handleFieldsChange={setFieldsForPage}
+                >
+                  <SortableFieldList
+                  fields={formPages[currentPage] || []}
+                  onFieldsChange={setFieldsForPage}
+                  // onDelete={(id) => setFields(fields.filter(field => field.id !== id))}
                   onDelete={handleDeleteField}
-                  formikValues={values}
-                  formikErrors={errors}
-                  formikTouched={touched}
+
+                  // onFieldValueChange={handleFieldValueChange}  // Add this prop
                 />
+                 </FormPreview>
               </main>
             </div>
           </Form>

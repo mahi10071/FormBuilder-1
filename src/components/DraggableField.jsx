@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import FieldRenderer from "./FieldRenderer";
+import { AnimatePresence, motion } from "framer-motion";
 import { Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { motion, AnimatePresence } from "framer-motion";
 
-const DraggableField = ({ field, onLabelChange, onDelete }) => {
+const DraggableField = ({ field, onLabelChange, onDelete, onUpdateField }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: field.id });
+  
 
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(field.label);
@@ -36,11 +37,24 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
     transition,
     marginBottom: "1rem",
   };
+  // const toggleRequired = () => {
+  //   const updatedRequired = !isRequired;
+  //   setIsRequired(updatedRequired);
+  //   //onUpdateField(field.id, { ...field, required: updatedRequired });
+  //   if (onUpdateField) {
+  //     onUpdateField(field.id, { ...field, required: updatedRequired });
+  //   } else {
+  //     console.error("onUpdateField is not defined!");
+  //   }
+  // };
 
   const toggleRequired = () => {
     const updatedRequired = !isRequired;
     setIsRequired(updatedRequired);
-    onUpdateField(field.id, { ...field, required: updatedRequired });
+
+    if (typeof onUpdateField === "function") {
+      onUpdateField(field.id, { required: updatedRequired }); // ✅ Now it works!
+    }
   };
 
   return (
@@ -99,7 +113,7 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
             </div>
           </div>
 
-          <FieldRenderer field={{ ...field, label }} />
+          <FieldRenderer field={{ ...field, label,required: isRequired }} />
 
           <div className="flex justify-end mt-2">
             <label className="flex items-center text-sm">
