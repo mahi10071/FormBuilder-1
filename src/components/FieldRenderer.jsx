@@ -8,7 +8,7 @@ const FieldRenderer = ({ field, onUpdateField }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
-  const [maxStars, setMaxStars] = useState(5); // Default to 5 stars
+  const [maxStars, setMaxStars] = useState(5);
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -323,7 +323,7 @@ const FieldRenderer = ({ field, onUpdateField }) => {
         <div className="mb-2">
           {field.type === "rating" && (
             <>
-              <label className="block mb-1 font-semibold">{field.label}</label>
+              {/* <label className="block mb-1 font-semibold">{field.label}</label> */}
 
               {/* Dropdown to select max stars */}
               <div className="relative mb-2">
