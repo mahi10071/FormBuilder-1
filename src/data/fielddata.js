@@ -133,7 +133,7 @@ export const customFields = [
 
   {
     id: "file",
-    type: "file",
+    type: "image",
     dataType: "binary",
     controlType: "fileupload",
     label: "File Upload",
