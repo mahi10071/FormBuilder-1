@@ -11,13 +11,27 @@ const FieldRenderer = ({ field, onUpdateField }) => {
   const [maxStars, setMaxStars] = useState(5);
 
   const handleChange = (e) => {
-    setValue(e.target.value);
-    if (field.required && !e.target.value.trim()) {
-      setError(`This field is required.`);
+    const inputValue = e.target.value;
+
+    if (field.id === "name") {
+      // Allow only alphabets and spaces
+      if (!/^[a-zA-Z\s]*$/.test(inputValue)) {
+        setError("Only alphabets and spaces are allowed.");
+        return;
+      } else {
+        setError("");
+      }
+    }
+
+    setValue(inputValue);
+
+    if (field.required && !inputValue.trim()) {
+      setError("This field is required.");
     } else {
       setError("");
     }
   };
+
   const handleBlur = () => {
     if (field.type === "email") {
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -225,12 +239,6 @@ const FieldRenderer = ({ field, onUpdateField }) => {
         </div>
       );
 
-    // case "checkbox":
-    //   return (
-    //     <div className="mb-2">
-    //       <input type="checkbox" className="mr-2" required={field.required} />
-    //     </div>
-    //   );
     case "checkbox":
       return (
         <div className="mb-2">
@@ -272,7 +280,7 @@ const FieldRenderer = ({ field, onUpdateField }) => {
           </div>
         </div>
       );
-    //positive,negative,decimal numbers only
+
     case "number":
       return (
         <div className="mb-2">
@@ -282,17 +290,34 @@ const FieldRenderer = ({ field, onUpdateField }) => {
             value={value}
             onChange={(e) => {
               const inputValue = e.target.value;
-              if (/^-?\d*\.?\d*$/.test(inputValue) || inputValue === "") {
-                // Allows positive, negative, and decimal numbers
-                setValue(inputValue);
-                setError("");
+
+              if (field.id === "phone") {
+                // Allow only 10-digit numbers (no negative, no decimal)
+                if (/^\d{0,10}$/.test(inputValue)) {
+                  setValue(inputValue);
+                  setError("");
+                } else {
+                  setError("Phone number must be exactly 10 digits.");
+                }
               } else {
-                setError("Only numbers are allowed.");
+                // General number validation (allows positive, negative, and decimals)
+                if (/^-?\d*\.?\d*$/.test(inputValue) || inputValue === "") {
+                  setValue(inputValue);
+                  setError("");
+                } else {
+                  setError("Only numbers are allowed.");
+                }
               }
             }}
             onPaste={(e) => {
               const pastedText = e.clipboardData.getData("text");
-              if (!/^-?\d*\.?\d*$/.test(pastedText)) {
+
+              if (field.id === "phone") {
+                if (!/^\d{10}$/.test(pastedText)) {
+                  e.preventDefault();
+                  setError("Phone number must be exactly 10 digits.");
+                }
+              } else if (!/^-?\d*\.?\d*$/.test(pastedText)) {
                 e.preventDefault();
                 setError("Only numbers are allowed.");
               }
@@ -305,6 +330,7 @@ const FieldRenderer = ({ field, onUpdateField }) => {
           {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
       );
+
     case "date":
       return (
         <div className="mb-2">
