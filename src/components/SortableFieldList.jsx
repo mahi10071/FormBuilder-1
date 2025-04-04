@@ -14,7 +14,7 @@ const SortableFieldList = ({ fields, onFieldsChange, errors,
       },
     })
   );
-  console.log(fields);
+  // console.log(fields);
   const onDragEnd = (event) => {
     const { active, over } = event;
     
@@ -34,6 +34,16 @@ const SortableFieldList = ({ fields, onFieldsChange, errors,
       field.id === id ? { ...field, label: newLabel } : field
     ));
   };
+
+  // const handleLabelChange = (id, newLabel) => {
+  //   setFieldsForPage((prevFields) =>
+  //     prevFields.map((field) =>
+  //       field.id === id ? { ...field, label: newLabel } : field
+  //     )
+  //   );
+  // };
+  
+
   const renderField = (field) => {
     switch (field.type) {
       case 'text':

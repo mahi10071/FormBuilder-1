@@ -6,16 +6,15 @@ import { Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { motion, AnimatePresence } from "framer-motion";
 
- 
 const DraggableField = ({ field, onLabelChange, onDelete }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: field.id });
-  
- 
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: field.id });
+
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(field.label);
   const [isVisible, setIsVisible] = useState(true);
   const [isRequired, setIsRequired] = useState(field.required || false);
- 
+
   const handleLabelChange = (e) => setLabel(e.target.value);
 
   const saveLabel = () => {
@@ -27,10 +26,8 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
     e.stopPropagation();
     e.preventDefault();
 
-    // Start exit animation
     setIsVisible(false);
 
-    // Delay actual removal to match animation duration
     setTimeout(() => onDelete(field.id), 300);
   };
 
@@ -59,11 +56,8 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
           exit={{
             opacity: 0,
             scaleY: 0,
-            transition: { duration: 0.4, ease: "easeInOut" }
+            transition: { duration: 0.4, ease: "easeInOut" },
           }}
-          
-          
-
         >
           <div className="flex items-center justify-between pb-2">
             {isEditing ? (
@@ -108,20 +102,19 @@ const DraggableField = ({ field, onLabelChange, onDelete }) => {
           <FieldRenderer field={{ ...field, label }} />
 
           <div className="flex justify-end mt-2">
-        <label className="flex items-center text-sm">
-          <input
-            type="checkbox"
-            checked={isRequired}
-            onChange={toggleRequired}
-            className="mr-2"
-          />
-          Required
-        </label>
-      </div>
+            <label className="flex items-center text-sm">
+              <input
+                type="checkbox"
+                checked={isRequired}
+                onChange={toggleRequired}
+                className="mr-2"
+              />
+              Required
+            </label>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
- 
   );
 };
 
