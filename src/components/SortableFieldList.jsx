@@ -23,7 +23,7 @@ const SortableFieldList = ({
     })
   );
   // console.log(fields);
-  
+
   const onDragEnd = (event) => {
     const { active, over } = event;
 
@@ -46,72 +46,16 @@ const SortableFieldList = ({
       )
     );
   };
+
   const handleUpdateField = (id, updatedField) => {
     onFieldsChange(
       fields.map((field) =>
         field.id === id ? { ...field, ...updatedField } : field
       )
     );
+    onFieldsChange(updatedFields); // from props or FormContext
   };
- 
-  
 
- // const renderField = (field) => {
-  //   switch (field.type) {
-  //     case "text":
-  //     case "email":
-  //       return (
-  //         <div key={field.id} className="mb-4">
-  //           <label htmlFor={field.id} className="block mb-2">
-  //             {field.label}
-  //           </label>
-  //           <Field
-  //             type={field.type}
-  //             id={field.id}
-  //             name={field.id.replace("-field", "")}
-  //             className={`w-full px-3 py-2 border rounded ${
-  //               touched[field.id.replace("-field", "")] &&
-  //               errors[field.id.replace("-field", "")]
-  //                 ? "border-red-500"
-  //                 : "border-gray-300"
-  //             }`}
-  //           />
-  //           <ErrorMessage
-  //             name={field.id.replace("-field", "")}
-  //             component="div"
-  //             className="text-red-500 text-sm mt-1"
-  //           />
-  //         </div>
-  //       );
- 
-  //     case "radio":
-  //       return (
-  //         <div key={field.id} className="mb-4">
-  //           <label className="block mb-2">{field.label}</label>
-  //           {field.options.map((option) => (
-  //             <label key={option} className="inline-flex items-center mr-4">
-  //               <Field
-  //                 type="radio"
-  //                 name={field.id.replace("-field", "")}
-  //                 value={option}
-  //                 className="form-radio"
-  //               />
-  //               <span className="ml-2">{option}</span>
-  //             </label>
-  //           ))}
-  //           <ErrorMessage
-  //             name={field.id.replace("-field", "")}
-  //             component="div"
-  //             className="text-red-500 text-sm mt-1"
-  //           />
-  //         </div>
-  //       );
- 
-  //     default:
-  //       return null;
-  //   }
-  // };
- 
   return (
     <DndContext
       collisionDetection={closestCenter}
@@ -141,6 +85,5 @@ const SortableFieldList = ({
     </DndContext>
   );
 };
- 
+
 export default SortableFieldList;
- 

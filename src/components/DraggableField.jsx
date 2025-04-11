@@ -9,7 +9,6 @@ import { Delete, Edit } from "@mui/icons-material";
 const DraggableField = ({ field, onLabelChange, onDelete, onUpdateField }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: field.id });
-  
 
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(field.label);
@@ -113,7 +112,7 @@ const DraggableField = ({ field, onLabelChange, onDelete, onUpdateField }) => {
             </div>
           </div>
 
-          <FieldRenderer field={{ ...field, label,required: isRequired }} />
+          <FieldRenderer field={{ ...field, label, required: isRequired }} />
 
           <div className="flex justify-end mt-2">
             <label className="flex items-center text-sm">

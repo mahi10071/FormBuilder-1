@@ -14,7 +14,6 @@ const FieldRenderer = ({ field, onUpdateField }) => {
     const inputValue = e.target.value;
 
     if (field.id === "name") {
-     
       if (!/^[a-zA-Z\s]*$/.test(inputValue)) {
         setError("Only alphabets and spaces are allowed.");
         return;
@@ -291,7 +290,6 @@ const FieldRenderer = ({ field, onUpdateField }) => {
               const inputValue = e.target.value;
 
               if (field.id === "phone") {
-               
                 if (/^\d{0,10}$/.test(inputValue)) {
                   setValue(inputValue);
                   setError("");
@@ -299,7 +297,6 @@ const FieldRenderer = ({ field, onUpdateField }) => {
                   setError("Phone number must be exactly 10 digits.");
                 }
               } else {
-               
                 if (/^-?\d*\.?\d*$/.test(inputValue) || inputValue === "") {
                   setValue(inputValue);
                   setError("");
@@ -340,6 +337,19 @@ const FieldRenderer = ({ field, onUpdateField }) => {
             required={field.required}
             className="w-full p-2 border rounded shadow-sm"
           />
+        </div>
+      );
+    case "time":
+      return (
+        <div className="mb-2">
+          <input
+            type="time"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            required={field.required}
+            className="w-full p-2 border rounded shadow-sm"
+          />
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
       );
 
@@ -427,7 +437,7 @@ const FieldRenderer = ({ field, onUpdateField }) => {
         };
         reader.readAsDataURL(file);
       };
-      
+
       return (
         <div className="mb-2">
           <label htmlFor={`file-upload-${field.name}`} className="block mb-2">

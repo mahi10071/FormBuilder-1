@@ -31,8 +31,20 @@ const FormBuilder = () => {
   ]);
   const [formPages, setFormPages] = useState([
     [
-      { id: "name", type: "text", label: "Name" },
-      { id: "email", type: "email", label: "Email" },
+      {
+        id: "name",
+        type: "text",
+        dataType: "string",
+        controlType: "textbox",
+        label: "Name",
+      },
+      {
+        id: "email",
+        type: "email",
+        dataType: "string",
+        controlType: "email",
+        label: "Email",
+      },
     ],
   ]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -105,7 +117,7 @@ const FormBuilder = () => {
   };
 
   const getFormValues = () => {
-    console.log("called")
+    console.log("called");
     const allFieldIds = new Set();
 
     formPages.forEach((page) => {
@@ -159,8 +171,11 @@ const FormBuilder = () => {
         onSubmit={handleSubmit}
         enableReinitialize={true}
       >
-        {({isSubmitting, errors, touched, values }) => (
-          <Form initialValues={getFormValues()} className="flex flex-col min-h-screen bg-white">
+        {({ isSubmitting, errors, touched, values }) => (
+          <Form
+            initialValues={getFormValues()}
+            className="flex flex-col min-h-screen bg-white"
+          >
             <Header formTitle={formTitle} />
 
             <div className="flex flex-1 p-5">
@@ -174,27 +189,27 @@ const FormBuilder = () => {
               </div>
               <main className="w-3/4">
                 <FormPreview
-                 formTitle={formTitle}
-                 formDescription={formDescription}
-                 formPages={formPages}
-                 currentPage={currentPage}
-                 onDrop={onDrop}
-                 setFieldsForPage={setFieldsForPage}
-                 onDelete={handleDeleteField}
-                 formikValues={values}
-                 formikErrors={errors}
-                 formikTouched={touched}
-                 handleFieldsChange={setFieldsForPage}
+                  formTitle={formTitle}
+                  formDescription={formDescription}
+                  formPages={formPages}
+                  currentPage={currentPage}
+                  onDrop={onDrop}
+                  setFieldsForPage={setFieldsForPage}
+                  onDelete={handleDeleteField}
+                  formikValues={values}
+                  formikErrors={errors}
+                  formikTouched={touched}
+                  handleFieldsChange={setFieldsForPage}
                 >
                   <SortableFieldList
-                  fields={formPages[currentPage] || []}
-                  onFieldsChange={setFieldsForPage}
-                  // onDelete={(id) => setFields(fields.filter(field => field.id !== id))}
-                  onDelete={handleDeleteField}
+                    fields={formPages[currentPage] || []}
+                    onFieldsChange={setFieldsForPage}
+                    // onDelete={(id) => setFields(fields.filter(field => field.id !== id))}
+                    onDelete={handleDeleteField}
 
-                  // onFieldValueChange={handleFieldValueChange}  // Add this prop
-                />
-                 </FormPreview>
+                    // onFieldValueChange={handleFieldValueChange}  // Add this prop
+                  />
+                </FormPreview>
               </main>
             </div>
           </Form>

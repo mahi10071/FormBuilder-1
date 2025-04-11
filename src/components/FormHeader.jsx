@@ -17,7 +17,7 @@ const FormHeader = () => {
   const fetchFormData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8084/api/forms/detailsUsingId/${id}`
+        `http://localhost:8081/api/forms/detailsUsingId/${id}`
       );
       if (response.status === 200) {
         const { title, description } = response.data;
@@ -40,7 +40,7 @@ const FormHeader = () => {
 
       if (id) {
         await axios.put(
-          `http://localhost:8084/api/forms/update/${id}`,
+          `http://localhost:8081/api/forms/update/${id}`,
           formDTO
         );
         console.log("Form updated successfully!");

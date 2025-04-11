@@ -23,7 +23,7 @@ const FormDetailDialog = ({ open, setOpen }) => {
 
   const handleOk = async () => {
     try {
-      const response = await fetch("http://localhost:8084/api/forms/create", {
+      const response = await fetch("http://localhost:8081/api/forms/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

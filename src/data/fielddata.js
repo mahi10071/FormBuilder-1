@@ -144,9 +144,16 @@ export const customFields = [
     dataType: "number",
     controlType: "rating",
     label: "Rating",
-    min: 2, // Minimum rating level
-    max: 10, // Maximum rating level
-    symbol: "star", // Display stars as rating
+    min: 2,
+    max: 10,
+    symbol: "star",
+  },
+  {
+    id: "time",
+    type: "time",
+    dataType: "string", // or "time" if you have a specific handler for that
+    controlType: "timepicker", // or just "time" if you directly use HTML5 input type="time"
+    label: "Time Input",
   },
 ];
 

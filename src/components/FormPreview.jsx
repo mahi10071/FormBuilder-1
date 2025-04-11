@@ -2,7 +2,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import FormHeader from "./FormHeader";
 import SortableFieldList from "./SortableFieldList";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFormContext } from "../context/FormContext";
 import { IconButton, Tooltip } from "@mui/material";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const pageVariants = {
   initial: { opacity: 0, x: -20 },
@@ -26,52 +27,57 @@ const deleteButtonVariants = {
 };
 
 const FormPreview = ({ onDrop, setFieldsForPage, onDelete }) => {
-  
   const { id } = useParams();
   const { formPages, currentPage, nextPage, prevPage, removePage } =
     useFormContext();
 
-  const handleSaveForm = async () => {
+  const navigate = useNavigate();
+  const handleSubmitForm = async () => {
     try {
-      const fields = formPages[currentPage] || [];
-      console.log(fields);
+      for (const page of formPages) {
+        for (const field of page) {
+          const questionPayload = {
+            controlType: field.controlType,
+            label: field.label,
+            dataType: field.dataType,
+            required: field.required || false,
+            formId: id,
+          };
 
-      const questionsData = fields.map((field) => ({
-        label: field.label,
-        dataType: field.dataType,
-        controlType: field.controlType,
-        required: field.required,
-        formId: id,
-        options: field.options || [],
-      }));
+          // Save question
+          const questionResponse = await axios.post(
+            `http://localhost:8081/api/questions/create/${id}`,
+            questionPayload
+          );
 
-      console.log(questionsData);
+          const savedQuestion = questionResponse.data;
 
-      const response = await fetch(
-        "http://localhost:8084/api/questions/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(questionsData),
+          // Save options if controlType supports options
+          if (
+            ["radiobutton", "checkboxgroup", "select"].includes(
+              field.controlType
+            ) &&
+            field.options &&
+            field.options.length > 0
+          ) {
+            for (const option of field.options) {
+              await axios.post(
+                `http://localhost:8081/api/question-options/create/${savedQuestion.id}`,
+                {
+                  optionText: option,
+                  value: option.toLowerCase().replace(/\s+/g, "-"),
+                }
+              );
+            }
+          }
         }
-      );
-
-      if (response.ok) {
-        toast.success("Form saved successfully!", {
-          style: { background: "#d4edda", color: "#155724" },
-        });
-      } else {
-        toast.error("Error saving form.", {
-          style: { background: "#f8d7da", color: "#721c24" },
-        });
       }
+
+      toast.success("Form saved successfully!");
+      navigate(`/preview/${id}`);
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("An unexpected error occurred.", {
-        style: { background: "#f8d7da", color: "#721c24" },
-      });
+      console.error("Error saving form:", error);
+      toast.error("Failed to save the form.");
     }
   };
 
@@ -121,7 +127,7 @@ const FormPreview = ({ onDrop, setFieldsForPage, onDelete }) => {
         <button
           type="button"
           className="bg-gradient-to-r from-purple-300 to-indigo-300 text-black px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-          onClick={handleSaveForm}
+          onClick={handleSubmitForm}
         >
           Ready with the Form!
         </button>
