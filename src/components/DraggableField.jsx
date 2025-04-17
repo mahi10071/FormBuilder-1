@@ -36,23 +36,13 @@ const DraggableField = ({ field, onLabelChange, onDelete, onUpdateField }) => {
     transition,
     marginBottom: "1rem",
   };
-  // const toggleRequired = () => {
-  //   const updatedRequired = !isRequired;
-  //   setIsRequired(updatedRequired);
-  //   //onUpdateField(field.id, { ...field, required: updatedRequired });
-  //   if (onUpdateField) {
-  //     onUpdateField(field.id, { ...field, required: updatedRequired });
-  //   } else {
-  //     console.error("onUpdateField is not defined!");
-  //   }
-  // };
 
   const toggleRequired = () => {
     const updatedRequired = !isRequired;
     setIsRequired(updatedRequired);
 
     if (typeof onUpdateField === "function") {
-      onUpdateField(field.id, { required: updatedRequired }); // ✅ Now it works!
+      onUpdateField(field.id, { required: updatedRequired });
     }
   };
 

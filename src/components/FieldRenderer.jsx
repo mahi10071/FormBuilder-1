@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { FaChevronDown } from "react-icons/fa"; // Import dropdown icon
+import { FaChevronDown } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
+import ImageUpload from "./ImageUpload";
+import FileUpload from "./FileUpload";
 
 const FieldRenderer = ({ field, onUpdateField }) => {
   const [options, setOptions] = useState(field.options || []);
@@ -114,7 +116,7 @@ const FieldRenderer = ({ field, onUpdateField }) => {
             placeholder={`Enter your ${field.label.toLowerCase()} here`}
             value={value}
             onChange={handleChange}
-            onBlur={handleBlur} // Validates when leaving the field
+            onBlur={handleBlur}
             required={field.required}
             className={`w-full p-2 border rounded shadow-sm ${
               field.required && error ? "border-red-500" : ""
@@ -358,9 +360,6 @@ const FieldRenderer = ({ field, onUpdateField }) => {
         <div className="mb-2">
           {field.type === "rating" && (
             <>
-              {/* <label className="block mb-1 font-semibold">{field.label}</label> */}
-
-              {/* Dropdown to select max stars */}
               <div className="relative mb-2">
                 <label className="block mb-1 text-sm font-medium">Levels</label>
                 <select
@@ -369,7 +368,7 @@ const FieldRenderer = ({ field, onUpdateField }) => {
                   onChange={(e) => setMaxStars(Number(e.target.value))}
                 >
                   {[...Array(9)].map((_, index) => {
-                    const stars = index + 2; // From 2 to 10
+                    const stars = index + 2;
                     return (
                       <option key={stars} value={stars}>
                         {stars}
@@ -379,7 +378,6 @@ const FieldRenderer = ({ field, onUpdateField }) => {
                 </select>
               </div>
 
-              {/* Star rating system */}
               <div className="flex space-x-1">
                 {[...Array(maxStars)].map((_, index) => {
                   const ratingValue = index + 1;
@@ -404,72 +402,19 @@ const FieldRenderer = ({ field, onUpdateField }) => {
         </div>
       );
     case "image":
-      const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+      switch (field.id) {
+        case "company-logo":
+          return <ImageUpload field={field} label="Company Logo" />;
+        case "image-header":
+          return <ImageUpload field={field} label="Header Image" />;
+        case "image-footer":
+          return <ImageUpload field={field} label="Footer Image" />;
+        case "file":
+          return <FileUpload field={field} label="Upload File" />;
+        default:
+          return null;
+      }
 
-        const allowedTypes = [
-          "image/jpeg",
-          "image/png",
-          "image/gif",
-          "image/webp",
-        ];
-        if (!allowedTypes.includes(file.type)) {
-          alert("Please upload a valid image file (JPEG, PNG, GIF, or WebP)");
-          return;
-        }
-
-        const maxSizeInBytes = 5 * 1024 * 1024;
-        if (file.size > maxSizeInBytes) {
-          alert("File is too large. Maximum file size is 5MB");
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          field.onChange({
-            target: {
-              name: field.name,
-              value: file,
-              preview: reader.result,
-            },
-          });
-        };
-        reader.readAsDataURL(file);
-      };
-
-      return (
-        <div className="mb-2">
-          <label htmlFor={`file-upload-${field.name}`} className="block mb-2">
-            {field.label}
-          </label>
-          <input
-            id={`file-upload-${field.name}`}
-            type="file"
-            accept="image/jpeg,image/png,image/gif,image/webp"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-          <div
-            className="border-2 border-dashed border-gray-300 p-4 text-center cursor-pointer hover:border-blue-500 transition-colors"
-            onClick={() =>
-              document.getElementById(`file-upload-${field.name}`).click()
-            }
-          >
-            {field.value?.preview ? (
-              <img
-                src={field.value.preview}
-                alt="Preview"
-                className="max-w-full max-h-48 mx-auto object-contain"
-              />
-            ) : (
-              <p className="text-gray-500">
-                Drag and drop an image or click to upload
-              </p>
-            )}
-          </div>
-        </div>
-      );
     default:
       return (
         <div className="mb-2">

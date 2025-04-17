@@ -10,25 +10,9 @@ import {
   initialValues,
   customFields,
 } from "../data/fielddata";
-// import { validationSchema, initialValues } from "../validations/formvalidation";
-import * as Yup from "yup";
 import { FormContext } from "../context/FormContext";
 
 const FormBuilder = () => {
-  const [formTitle, setFormTitle] = useState("Demo Form");
-  const [formDescription, setFormDescription] = useState(
-    "This is form description"
-  );
-  const [formFields, setFormFields] = useState([
-    { id: "name", type: "text", label: "Name" },
-    { id: "email", type: "email", label: "Email" },
-    {
-      id: "gender",
-      type: "radio",
-      label: "Gender",
-      options: ["Male", "Female"],
-    },
-  ]);
   const [formPages, setFormPages] = useState([
     [
       {
@@ -112,12 +96,10 @@ const FormBuilder = () => {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log("Form submitted with values:", values);
     setSubmitting(false);
   };
 
   const getFormValues = () => {
-    console.log("called");
     const allFieldIds = new Set();
 
     formPages.forEach((page) => {
@@ -167,7 +149,6 @@ const FormBuilder = () => {
     >
       <Formik
         initialValues={getFormValues()}
-        // validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize={true}
       >
@@ -176,7 +157,7 @@ const FormBuilder = () => {
             initialValues={getFormValues()}
             className="flex flex-col min-h-screen bg-white"
           >
-            <Header formTitle={formTitle} />
+            <Header />
 
             <div className="flex flex-1 p-5">
               <div className="w-1/4 pr-4">
@@ -189,8 +170,6 @@ const FormBuilder = () => {
               </div>
               <main className="w-3/4">
                 <FormPreview
-                  formTitle={formTitle}
-                  formDescription={formDescription}
                   formPages={formPages}
                   currentPage={currentPage}
                   onDrop={onDrop}
@@ -204,7 +183,6 @@ const FormBuilder = () => {
                   <SortableFieldList
                     fields={formPages[currentPage] || []}
                     onFieldsChange={setFieldsForPage}
-                    // onDelete={(id) => setFields(fields.filter(field => field.id !== id))}
                     onDelete={handleDeleteField}
 
                     // onFieldValueChange={handleFieldValueChange}  // Add this prop

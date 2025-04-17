@@ -93,7 +93,6 @@ const FormHeader = () => {
             variant="outlined"
             size="small"
             fullWidth
-            //  className="border-b-2 border-gray-500 focus:border-black-600 focus:outline-none"
           />
         )}
       </Typography>

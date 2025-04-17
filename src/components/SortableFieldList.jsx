@@ -6,7 +6,6 @@ import {
 } from "@dnd-kit/sortable";
 import { useSensors, useSensor, PointerSensor } from "@dnd-kit/core";
 import DraggableField from "./DraggableField";
-import { Field, ErrorMessage } from "formik";
 
 const SortableFieldList = ({
   fields,
@@ -22,7 +21,6 @@ const SortableFieldList = ({
       },
     })
   );
-  // console.log(fields);
 
   const onDragEnd = (event) => {
     const { active, over } = event;
@@ -53,7 +51,7 @@ const SortableFieldList = ({
         field.id === id ? { ...field, ...updatedField } : field
       )
     );
-    onFieldsChange(updatedFields); // from props or FormContext
+    onFieldsChange(updatedFields);
   };
 
   return (

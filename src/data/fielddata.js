@@ -20,29 +20,6 @@ export const initialFields = [
     controlType: "numberbox",
     label: "Phone",
   },
-  // {
-  //   id: "radio",
-  //   type: "radio",
-  //   dataType: "string",
-  //   controlType: "radiobutton",
-  //   label: "Radio",
-  //   options: ["Option 1", "Option 2"],
-  // },
-  // {
-  //   id: "dropdown",
-  //   type: "dropdown",
-  //   dataType: "string",
-  //   controlType: "select",
-  //   label: "Dropdown",
-  //   options: ["Option 1", "Option 2", "Option 3"],
-  // },
-  // {
-  //   id: "checkbox",
-  //   type: "checkbox",
-  //   dataType: "boolean",
-  //   controlType: "checkbox",
-  //   label: "Checkbox",
-  // },
 ];
 
 export const dataFields = [
@@ -93,8 +70,6 @@ export const customFields = [
     controlType: "multilinetext",
     label: "Textarea",
   },
-
-  // { id: 'checkbox', type: 'checkbox', dataType: 'boolean', controlType: 'checkbox', label: 'Checkbox' },
 
   {
     id: "checkbox",
@@ -151,8 +126,8 @@ export const customFields = [
   {
     id: "time",
     type: "time",
-    dataType: "string", // or "time" if you have a specific handler for that
-    controlType: "timepicker", // or just "time" if you directly use HTML5 input type="time"
+    dataType: "string",
+    controlType: "timepicker",
     label: "Time Input",
   },
 ];

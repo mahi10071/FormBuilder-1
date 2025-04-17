@@ -44,7 +44,6 @@ const FormPreview = ({ onDrop, setFieldsForPage, onDelete }) => {
             formId: id,
           };
 
-          // Save question
           const questionResponse = await axios.post(
             `http://localhost:8081/api/questions/create/${id}`,
             questionPayload
@@ -52,7 +51,6 @@ const FormPreview = ({ onDrop, setFieldsForPage, onDelete }) => {
 
           const savedQuestion = questionResponse.data;
 
-          // Save options if controlType supports options
           if (
             ["radiobutton", "checkboxgroup", "select"].includes(
               field.controlType
